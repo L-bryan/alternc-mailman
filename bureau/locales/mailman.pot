@@ -1,0 +1,293 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR AlternC Team
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: AlternC 2.0\n"
+"Report-Msgid-Bugs-To: i18n@alternc.org\n"
+"POT-Creation-Date: 2017-10-08 14:49+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../admin/menu_mailman.php:33 ../admin/mman_add.php:34
+#: ../admin/mman_list.php:40 ../admin/mman_list.php:59
+#: ../admin/mman_passwd.php:37 ../admin/mman_passwd.php:45
+#: ../admin/mman_url.php:38 ../admin/mman_url.php:48 ../admin/mman_url.php:57
+#: ../class/m_mailman.php:80 ../class/m_mailman.php:619
+msgid "Mailing lists"
+msgstr ""
+
+#: ../admin/menu_mailman.php:35
+msgid "(with mailman)"
+msgstr ""
+
+#: ../admin/mman_add.php:46
+msgid "List's email address"
+msgstr ""
+
+#: ../admin/mman_add.php:49
+msgid "Email of the list's administrator"
+msgstr ""
+
+#: ../admin/mman_add.php:52
+msgid "List password"
+msgstr ""
+
+#: ../admin/mman_add.php:56
+msgid "List password (confirm)"
+msgstr ""
+
+#: ../admin/mman_add.php:60
+msgid "Create the list."
+msgstr ""
+
+#: ../admin/mman_add.php:61 ../admin/mman_url.php:92
+msgid "Cancel"
+msgstr ""
+
+#: ../admin/mman_del.php:51
+msgid "Deleting mailman lists"
+msgstr ""
+
+#: ../admin/mman_del.php:54
+msgid "Please confirm the deletion of the following mailman lists:"
+msgstr ""
+
+#: ../admin/mman_del.php:65
+msgid "Delete the selected mailman lists"
+msgstr ""
+
+#: ../admin/mman_del.php:65
+msgid "Don't delete lists and go back to the mailman list"
+msgstr ""
+
+#: ../admin/mman_del.php:70 ../admin/mman_edit.php:72
+msgid ""
+"Warning: Deleting a mailman list will destroy all the subscribed users, "
+"preferences and archives it contains! You will <b>NOT</b> be able to get "
+"your data back!"
+msgstr ""
+
+#: ../admin/mman_doadd.php:43
+msgid "The mailing list has been successfully created."
+msgstr ""
+
+#: ../admin/mman_dodel.php:55 ../admin/mman_doedit.php:58
+#: ../admin/mman_doedit.php:68
+#, php-format
+msgid "The list %s has been successfully deleted."
+msgstr ""
+
+#: ../admin/mman_dopasswd.php:41
+msgid "The mailing list password will be changed in a few minutes."
+msgstr ""
+
+#: ../admin/mman_dourl.php:39
+msgid "The mailing list management url has been successfully changed."
+msgstr ""
+
+#: ../admin/mman_edit.php:52
+msgid "Editing mailman lists"
+msgstr ""
+
+#: ../admin/mman_list.php:30
+msgid "Password change pending"
+msgstr ""
+
+#: ../admin/mman_list.php:31
+msgid "Url change pending"
+msgstr ""
+
+#: ../admin/mman_list.php:32
+msgid "List creation pending"
+msgstr ""
+
+#: ../admin/mman_list.php:38
+msgid ""
+"No domain is installed on your account, you cannot create any mailing list!"
+msgstr ""
+
+#: ../admin/mman_list.php:68
+msgid "Create a list"
+msgstr ""
+
+#: ../admin/mman_list.php:78
+msgid "List Status"
+msgstr ""
+
+#: ../admin/mman_list.php:78
+msgid "List name"
+msgstr ""
+
+#: ../admin/mman_list.php:78
+msgid "Select"
+msgstr ""
+
+#: ../admin/mman_list.php:91
+msgid "List is pending deletion, you can't do anything on it"
+msgstr ""
+
+#: ../admin/mman_list.php:102
+msgid "List admin"
+msgstr ""
+
+#: ../admin/mman_list.php:103
+msgid "Pending messages"
+msgstr ""
+
+#: ../admin/mman_list.php:106
+msgid "Change password"
+msgstr ""
+
+#: ../admin/mman_list.php:107
+msgid "Change url"
+msgstr ""
+
+#: ../admin/mman_list.php:116
+msgid "-- Choose an action --"
+msgstr ""
+
+#: ../admin/mman_list.php:120
+msgid "Validate"
+msgstr ""
+
+#: ../admin/mman_passwd.php:56
+#, php-format
+msgid "Changing password of list %s"
+msgstr ""
+
+#: ../admin/mman_passwd.php:58
+msgid "New list password"
+msgstr ""
+
+#: ../admin/mman_passwd.php:62
+msgid "Password confirmation"
+msgstr ""
+
+#: ../admin/mman_passwd.php:66
+msgid "Change the password."
+msgstr ""
+
+#: ../admin/mman_url.php:65
+msgid ""
+"This is the current url to access administration and public pages for this "
+"list. If you want to change it, select another url in the list and submit "
+"this form. <br />If you don't know what you are doing, don't change anything "
+"here."
+msgstr ""
+
+#: ../admin/mman_url.php:71
+#, php-format
+msgid "Changing management url of list %s"
+msgstr ""
+
+#: ../admin/mman_url.php:74
+msgid "Current list url"
+msgstr ""
+
+#: ../admin/mman_url.php:78
+msgid "New list management url"
+msgstr ""
+
+#: ../admin/mman_url.php:91
+msgid "Change the url."
+msgstr ""
+
+#: ../class/m_mailman.php:42
+msgid "This list already exist"
+msgstr ""
+
+#: ../class/m_mailman.php:43 ../class/m_mailman.php:152
+#: ../class/m_mailman.php:362 ../class/m_mailman.php:410
+#: ../class/m_mailman.php:527 ../class/m_mailman.php:552
+#: ../class/m_mailman.php:572
+msgid "This list does not exist"
+msgstr ""
+
+#: ../class/m_mailman.php:44
+msgid "A fatal error happened when creating the list"
+msgstr ""
+
+#: ../class/m_mailman.php:45
+msgid "A fatal error happened when deleting the list"
+msgstr ""
+
+#: ../class/m_mailman.php:46
+msgid "A fatal error happened when changing the list password"
+msgstr ""
+
+#: ../class/m_mailman.php:47
+msgid "A fatal error happened when getting the list url"
+msgstr ""
+
+#: ../class/m_mailman.php:68 ../class/m_mailman.php:472
+#: ../class/m_mailman.php:503
+msgid "No list defined yet"
+msgstr ""
+
+#: ../class/m_mailman.php:173
+msgid ""
+"Special mail address for Mailman mailing-lists. <a href='mman_list."
+"php'>Click here to manage it.</a>"
+msgstr ""
+
+#: ../class/m_mailman.php:224
+#, php-format
+msgid "The mailman address %s does not exist"
+msgstr ""
+
+#: ../class/m_mailman.php:249
+msgid "Your mailing-list quota is over, you cannot create more mailing-lists."
+msgstr ""
+
+#: ../class/m_mailman.php:256
+msgid "The email you entered is syntaxically incorrect"
+msgstr ""
+
+#: ../class/m_mailman.php:271
+msgid "The login (left part of the @) is mandatory"
+msgstr ""
+
+#: ../class/m_mailman.php:275
+msgid "The owner email and the password are mandatory"
+msgstr ""
+
+#: ../class/m_mailman.php:279
+msgid "This email is incorrect"
+msgstr ""
+
+#: ../class/m_mailman.php:283 ../class/m_mailman.php:531
+msgid "The passwords are differents, please try again"
+msgstr ""
+
+#: ../class/m_mailman.php:288
+msgid "This domain does not exist."
+msgstr ""
+
+#: ../class/m_mailman.php:294
+msgid ""
+"A list with the same name already exist on the server. Please choose another "
+"name."
+msgstr ""
+
+#: ../class/m_mailman.php:327
+msgid ""
+"This email address (or one of the list-subscribe, list-unsubscribe etc.) are "
+"already used."
+msgstr ""
+
+#: ../class/m_mailman.php:366 ../class/m_mailman.php:414
+msgid "This list has pending action, you cannot delete it"
+msgstr ""
+
+#: ../class/m_mailman.php:586
+msgid "Mailing lists (mailman)"
+msgstr ""

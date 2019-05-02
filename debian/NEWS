@@ -1,0 +1,61 @@
+alternc-mailman (1.8) stable; urgency=low
+
+    This version changes the following : 
+    * The blue desktop is alternc's default as for 0.9.10. alternc-mailman 1.8 is using 
+      this blue desktop as a default too, and the code in the admin/ folder is now compliant
+      with this frameless way of showing the panel pages.
+    * Users are now able to change a list password from AlternC (useful when a user forgot his 
+      list's password). A new perl binary has been added to call /var/lib/mailman/bin/change_pw 
+      accordingly
+    * The code has been reworked to include only clean, javadoc-compliant, english written comments
+
+ -- Benjamin Sonntag <benjamin@sonntag.fr>  Mon, 15 Jun 2009 07:20:00 +0200
+
+alternc-mailman (1.7) stable; urgency=low
+
+    add a configuration variable to control the domain in the list urls. if it
+    is set, it will be used to construct the urls in the mailing list
+    listings. If it is unset, the list's domain name will be used.
+
+    the default behaviour is therefore reverted to the one before 1.5 (svn
+    [2097]) where the list domain is used (without the prepended "mail.").
+
+    in case the variable is set, the administrator still needs to convert the
+    urls of existing lists and fix the default url in mm_cfg.py for new lists.
+    this can be done with a script like this in /var/lib/mailman/change_url:
+
+    def change_url(mlist):
+        mlist.web_page_url='https://listes.koumbit.net/cgi-bin/mailman/'
+        mlist.Save()
+        mlist.Unlock()
+
+    ... called like this:
+
+     /usr/lib/mailman/bin/withlist -l -r change_url -a
+     
+     See https://alternc.org/ticket/1131 for more information.
+
+ -- Antoine Beaupré <antoine@koumbit.org>  Thu, 08 May 2008 16:02:34 -0400
+
+alternc-mailman (1.6) stable; urgency=low
+
+    This releases finally packages the VirtualMailman patches properly,
+    instead of assuming that the admin installed the patches on his
+    own. The patches are installed during the installation, after
+    confirmation by the user through debconf.
+  
+    If you already have a patched mailman installation, you should add a
+    mark file so that this package knows about it otherwise it's going to
+    try and repatch Mailman, which will fail and you will not be able to
+    upgrade alternc-mailman. To fix this, do the following:
+  
+    mkdir -p /usr/share/alternc-mailman/patches
+    cd /usr/share/alternc-mailman/patches
+    touch mailman-true-virtual-2.1.9.patch
+    ln -s mailman-true-virtual-2.1.9.patch mailman-true-virtual.applied
+  
+    Only then install this package. Those steps are only required for
+    installations that are already patched.
+
+ -- Antoine Beaupré <antoine@koumbit.org>  Thu, 24 Apr 2008 18:15:37 -0400
+
