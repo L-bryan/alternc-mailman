@@ -706,13 +706,12 @@ class m_mailman {
 
   	$MIN_STRLENG = 8;
 
-
 	if( $this->is_user_exist($email) ){
 		if( $this->is_username_use($login)  || $this->is_email_use($email) ){
 			$msg->raise("ERROR","mailman",_("The username or email are use yet"));
 			return false;
 		}else{
-			$db->query("INSERT INTO mailman_account(uid, username, email) VALUE (?,?,?);", array(intval($cuid),$login,$email));
+			$db->query("INSERT INTO mailman_account(uid, username, email, mailman_action) VALUE (?,?,?,'OK');", array(intval($cuid),$login,$email));
 			return true;
 		}
 	}else{
@@ -723,7 +722,7 @@ class m_mailman {
 			$user = $this->find_user_django($email,$login); //ret { 0 , $user[ [username], [email] ] , false }
 
 			if( $user !== false && $user !== 0){//find exactly 1
-				$db->query("INSERT INTO mailman_account(uid, username, email) VALUE (?,?,?);", 
+				$db->query("INSERT INTO mailman_account(uid, username, email, mailman_action) VALUE (?,?,?,'OK');", 
 				array(intval($cuid),$user['username'],$user['email']));
 				return true;	
 			}elseif($user === false){//find more than 1
@@ -732,7 +731,6 @@ class m_mailman {
 			}//else find 0
 		}
 	}
-
 													
   	if( !preg_match ("/^[0-9A-z]+$/m",$login) ){//juste check if username isn't empty or with space & tab only	
 		$msg->raise("ERROR","mailman",_("The username is empty or undifined"));
@@ -749,15 +747,18 @@ class m_mailman {
   		return false;
   	}
 
-	$ret = $db->query("INSERT INTO mailman_account(uid, username, email) VALUE (?,?,?);", array(intval($cuid),$login,$email));
-	
-	exec("python /usr/lib/alternc/django_create_user.py -u $login -e $email -p $pwd",$array,$ret);
-  	//exec("/usr/share/mailman3-web/django_create_user.py -u $login -e $email -p $pwd",$array,$ret);
-	var_dump($array);
-	var_dump($ret);
+	$ret = $db->query("INSERT INTO mailman_account(uid, username, password, email, mailman_action) VALUE (?,?,?,?,'CREATE');", array(intval($cuid),$login, $pwd,$email));
+
   	return true;
   }
-
+  /* ----------------------------------------------------------------------- */
+  /* REMOVE USER DJANGO */
+	function remove_account($mail){
+		global $db, $cuid;	
+		if( $this->is_email_use($mail) ){
+			$db->query("UPDATE mailman_account SET mailman_action='DELETE' WHERE email= ? and uid= ?;", array( $mail,intval($cuid) ) );
+		}
+	}
   /* ----------------------------------------------------------------------- */
   /* USER LIST */
 
@@ -765,7 +766,7 @@ class m_mailman {
 		global $msg,$db,$cuid;
 		
 		$mailman_account = [];
-		$db->query("SELECT username, email FROM mailman_account where uid = ?;", array($cuid) );
+		$db->query("SELECT username, email FROM mailman_account where uid = ? and mailman_action !='DELETE';", array($cuid) );
 		while($db->next_record()){
 			$user  = $db->f("username");
 			$email = $db->f("email");
