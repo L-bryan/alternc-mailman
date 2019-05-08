@@ -8,12 +8,12 @@ MAILMAN_CONFIG_TEMPLATE="/etc/alternc/templates/mailman/mm_cfg.py"
 MAILMAN_CONFIG_BACKUP="/var/lib/alternc/backups/etc-mailman-mm_cfg.py"
 MAILMAN_PASS="`perl -e 'print map{("a".."z","A".."Z",0..9)[int(rand(62))]}(1..10)' `" # copy-pasted from alternc/debian/config
 
-# new packages put binaries in /usr/lib/mailman/bin
-if [ -d /usr/lib/mailman/bin ]
+# new packages put binaries in /usr/lib/mailman3/bin
+if [ -d /usr/lib/mailman3/bin ]
 then
-    MAILMAN_BIN="/usr/lib/mailman/bin"
+    MAILMAN_BIN="/usr/lib/mailman3/bin"
 else
-    MAILMAN_BIN="/var/lib/mailman/bin"
+    MAILMAN_BIN="/usr/lib/mailman3/bin" #useless
 fi
 
 case "$1" in
@@ -23,7 +23,7 @@ case "$1" in
     # Then, configure the quota for "mailman"
     /usr/lib/alternc/quota_init mailman 0 
 
-    echo "fixing private archive rights for mailman"
+    echo "fixing private archive rights for mailman" #---------------------------------ARCHIVE I think is not need
     dpkg-statoverride --list /var/lib/mailman/archives/private >/dev/null || 
     dpkg-statoverride --add root list 2775 /var/lib/mailman/archives/private
     chmod 2775 /var/lib/mailman/archives/private
@@ -40,7 +40,8 @@ case "$1" in
             echo "$MAILMAN_CONFIG_TEMPLATE and delete $MAILMAN_CONFIG_BACKUP"
             exit 1
         fi
-    fi
+    fi #-------------------------------------------------------------------------------OLD CONFIG FILE + PATH AND VIRTUAL
+
     SECRET=$(generate_string 32 | sed -e "s/['|&]/\\&/g")
     sed -e "s/%%fqdn%%/$FQDN/;s|%%mailman_form_secret%%|$SECRET|" < "$MAILMAN_CONFIG_TEMPLATE" > "$MAILMAN_CONFIG"
     cp -a -f "$MAILMAN_CONFIG" "$MAILMAN_CONFIG_BACKUP"
@@ -53,6 +54,7 @@ case "$1" in
       PATCHDIR=""
       PATCHFILE="/usr/share/alternc-mailman/patches/mailman-true-virtual-$MAILMAN_VERSION.patch"
     fi
+
     PATCH_MARKER="/usr/share/alternc-mailman/patches/mailman-true-virtual.applied"
     if [ -h $PATCH_MARKER ]; then
         PATCH_VERSION=`readlink $PATCH_MARKER | sed -e 's/^.*-//;s/\.patch$//;s/\.d$//'`
@@ -64,11 +66,13 @@ case "$1" in
             rm -f $PATCH_MARKER
         fi
     fi
+
     if [ "$PATCHDIR" = "" ] ; then
         if [ ! -r $PATCHFILE ]; then
             echo "no patchfile for mailman $MAILMAN_VERSION"
         fi
     fi
+
     if [ -r "$PATCHFILE" -o  "$PATCHDIR" != "" ] ; then if [ ! -h $PATCH_MARKER ]; then
         db_get alternc-mailman/patch-mailman || true
         if [ "$RET" = "true" ]; then
@@ -122,7 +126,7 @@ case "$1" in
     # tell debconf to go away, otherwise alternc.install will freeze
     db_stop
 
-    # Create the "mailman" list if it does not exist yet
+    # Create the "mailman" list if it does not exist yet ---------------------------------------- NOT NEED
     if [ ! -d /var/lib/mailman/lists/mailman ]; then
         # Create the list :
 	owner='admin@'${FQDN} 
@@ -152,8 +156,9 @@ case "$1" in
     fi
 
     echo "$2" >/var/lib/alternc/backups/alternc-mailman-lastversion
-
-    echo -e "\033[31m**********************************************"
+    
+    echo -e "\033[31m"
+    echo "**********************************************"
     echo "*                                            *"
     echo "*   ALTERNC-MAILMAN  ACTION REQUESTED        *"
     echo "*                                            *"
