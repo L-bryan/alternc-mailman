@@ -2,7 +2,8 @@
 <?php
 /* 
 	check in django_db and in mailman3_db 
-	if list, account in alternc exist.
+	if list, account in alternc exist and 
+	remove if account do not exist.
 */
 
 
@@ -101,19 +102,23 @@ $db = new pdo("mysql:host=".$settings['host'].";dbname=$dbname",$settings['user'
 if(count($users_to_remove)>0){
 	$questionmarks = str_repeat("?,", count($users_to_remove)-1) . "?"; //va mettre 1 à n '?' dans le string
 	$request = $db->prepare("DELETE FROM mailman_account WHERE username in ($questionmarks);");
-	$request->execute( $users_to_remove );//$users_to_remove is yet an array !!
+	$ok = $request->execute( $users_to_remove );//$users_to_remove is yet an array !!
+	if ( $ok ){ echo("all this users are remove"); foreach($users_to_remove as $u){ echo "[$u] "; }}
 }
 
+//remove lists
 if(count($lists_to_remove)>0){
 	foreach($lists_to_remove as $domain => $array_list){
 		foreach($array_list as $list){
 
 			$request = $db->prepare("DELETE FROM mailman WHERE domain=? and list=?");
-			$request->execute( array($domain,$list) );
+			$ok = $request->execute( array($domain,$list) );
 
 			$request = $db->prepare("DELETE FROM address WHERE address LIKE ? and type='mailman' and domaine_id=
 							(SELECT id FROM domaines dom WHERE domaine=? ); ");
-			$request->execute( array($list."%",$domain) );
+			$ok = $ok && $request->execute( array($list."%",$domain) );
+			if ( $ok ){ echo("this lists are remove: $list from domain $domain"); }
 		}
 	}
+	
 }

@@ -1,8 +1,8 @@
 #!/usr/bin/php
 <?php
 /* 
-	check in django_db and in mailman3_db 
-	if list, account in alternc exist.
+	remove in django_db (mailman3web) and in mailman3_db (mailman)
+	the domain in parameter.
 */
 
 

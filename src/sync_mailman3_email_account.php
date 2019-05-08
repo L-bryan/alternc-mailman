@@ -55,4 +55,6 @@ $db = new pdo("mysql:host=".$settings['host'].";dbname=$dbname",$settings['user'
 foreach($toUpdate as $u){
 	$query = $db->prepare("UPDATE mailman_account SET email = ? WHERE username = ?;");
 	$ok = $query->execute( array($u['email'],$u['username']) );
+	$query = $db->prepare("UPDATE mailman m SET owner = ? WHERE  m.uid in (SELECT ma.uid FROM mailman_account ma WHERE ma.username = ?);");
+	$ok = $ok && $query->execute( array($u['email'],$u['username']) );
 }
