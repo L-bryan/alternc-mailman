@@ -37,6 +37,18 @@ install:
 		$(DESTDIR)/usr/lib/mailman/bin/
 	install -m 0755 src/update_mailman.sh \
 		$(DESTDIR)/usr/lib/alternc/
+	install -m 0755 src/remove_dom_mailman.php \
+		$(DESTDIR)/usr/lib/alternc/
+	install -m 0755 src/check_db_mman3.php \
+		$(DESTDIR)/usr/lib/alternc/
+	install -m 0755 src/sync_mailman3_email_account.php \
+		$(DESTDIR)/usr/lib/alternc/
+	install -m 0755 src/update_mailman_account.sh \
+		$(DESTDIR)/usr/lib/alternc/
+	install -m 0755 src/django_create_user.py \
+		$(DESTDIR)/usr/share/mailman3-web/
+	install -m 0755 src/django_remove_user.py \
+		$(DESTDIR)/usr/share/mailman3-web/
 	install -m 0644 mailman.sql \
 		$(DESTDIR)/usr/share/alternc/install/
 	install -m 750 alternc-mailman-install $(DESTDIR)/usr/lib/alternc/install.d/
