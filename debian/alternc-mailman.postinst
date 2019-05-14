@@ -4,10 +4,6 @@
 
 CONFIGFILE="/etc/alternc/local.sh"
 
-MAILMAN_CONFIG="/etc/mailman/mm_cfg.py"
-MAILMAN_CONFIG_TEMPLATE="/etc/alternc/templates/mailman/mm_cfg.py"
-MAILMAN_CONFIG_BACKUP="/var/lib/alternc/backups/etc-mailman-mm_cfg.py"
-
 #mailman core
 MAILMAN_CONFIG="/etc/mailman3/mailman.cfg"
 MAILMAN_CONFIG_TEMPLATE="/etc/alternc/templates/mailman/mailman.cfg"
@@ -39,12 +35,13 @@ case "$1" in
     # Then, configure the quota for "mailman"
     /usr/lib/alternc/quota_init mailman 0 
 
-#--------------------------------------------------------------------------------------ARCHIVE I think is not need START
-    echo "fixing private archive rights for mailman" 
-    dpkg-statoverride --list /var/lib/mailman/archives/private >/dev/null || 
-    dpkg-statoverride --add root list 2775 /var/lib/mailman/archives/private
-    chmod 2775 /var/lib/mailman/archives/private
-#--------------------------------------------------------------------------------------ARCHIVE I think is not need END
+# hyperkitty manage archives
+#--------------------------------------------------------------------------------------ARCHIVES I think is not need START
+#    echo "fixing private archive rights for mailman" 
+#    dpkg-statoverride --list /var/lib/mailman/archives/private >/dev/null || 
+#    dpkg-statoverride --add root list 2775 /var/lib/mailman/archives/private
+#    chmod 2775 /var/lib/mailman/archives/private
+#--------------------------------------------------------------------------------------ARCHIVES I think is not need END
     
     echo "Installing mysql table"
     mysql --defaults-file=/etc/alternc/my.cnf < /usr/share/alternc/install/mailman.sql
@@ -59,28 +56,39 @@ case "$1" in
             exit 1
         fi
     fi
-#    var= rgrep "^url:" $FICHIER   
- 
-#    arr_parts=$(echo $var | tr ":" "\n")
-#    for part in $arr_parts;do
-#        if [[ "$part" =~ ^(.*)@.*$ ]];then
-#            adresse=${BASH_REMATCH[1]}; 
-#        fi; 
-#    done
-
-    #SECRET=$(generate_string 32 | sed -e "s/['|&]/\\&/g") #generate_string from => /usr/lib/alternc/functions.sh
+    if [ -f "$MAILMAN_WEB_CONFIG_BACKUP" ]; then
+        if ! diff -q "$MAILMAN_WEB_CONFIG" "$MAILMAN_WEB_CONFIG_BACKUP"; then
+            echo "$MAILMAN_WEB_CONFIG has been modified since last alternc-mailman"
+            echo "configuration.  You should merge your changes to"
+            echo "$MAILMAN_WEB_CONFIG_TEMPLATE and delete $MAILMAN_WEB_CONFIG_BACKUP"
+            exit 1
+        fi
+    fi
     
-    SECRET_KEY=$(rgrep "^SECRET_KEY" $MAILMAN_WEB_CONFIG | awk '{print $3}' |cut -d "'" -f "2")
+    SECRET_KEY=$(rgrep "^SECRET_KEY" $MAILMAN_WEB_CONFIG | awk '{print $3}' | cut -d "'" -f "2")
     REST_KEY=$(rgrep "^MAILMAN_REST_API_PASS" $MAILMAN_WEB_CONFIG | awk '{print $3}' | cut -d "'" -f "2")
     ARCHIVER_KEY=$(rgrep "^MAILMAN_ARCHIVER_KEY" $MAILMAN_WEB_CONFIG | awk '{print $3}' | cut -d "'" -f "2")
     dbmailman3webpass=$(rgrep "^url:" $MAILMAN_CONFIG | cut -d ":" -f "4" | cut -d "@" -f "1")
+    
+    #generate_string from => /usr/lib/alternc/functions.sh
+    if [ $SECRET_KEY == "" ];then
+        SECRET_KEY=$(generate_string 32 | sed -e "s/['|&]/\\&/g")
+    fi
+    if [ $REST_KEY == "" ];then
+        REST_KEY=$(generate_string 32 | sed -e "s/['|&]/\\&/g")
+    fi
+    if [ $ARCHIVER_KEY == "" ];then
+        ARCHIVER_KEY=$(generate_string 32 | sed -e "s/['|&]/\\&/g")
+    fi
+    if [ $dbmailman3webpass == "" ];then
+        dbmailman3webpass=$(generate_string 32 | sed -e "s/['|&]/\\&/g")
+    fi
 
-    sed -e "s/%%fqdn%%/$FQDN/;s|%%restkey%%|$REST_KEY|;s|%%archiverkey%%|$ARCHIVER_KEY|;s|%dbmailman3webpass%"|$dbmailman3webpass < "$MAILMAN_CONFIG_TEMPLATE" > "$MAILMAN_CONFIG"
+    sed -e "s/%%fqdn%%/$FQDN/;s|%%restkey%%|$REST_KEY|;s|%%archiverkey%%|$ARCHIVER_KEY|;s|%%dbmailman3webpass%%|$dbmailman3webpass|;s|%%secretkey%%|$SECRET_KEY|" < "$MAILMAN_CONFIG_TEMPLATE" > "$MAILMAN_CONFIG"
     cp -a -f "$MAILMAN_CONFIG" "$MAILMAN_CONFIG_BACKUP"
 
-    sed -e "s/%%fqdn%%/$FQDN/;s|%%restkey%%|$REST_KEY|;s|%%archiverkey%%|$ARCHIVER_KEY|;s|%dbmailman3webpass%"|$dbmailman3webpass < "$MAILMAN_WEB_CONFIG_TEMPLATE" > "$MAILMAN_WEB_CONFIG"
+    sed -e "s/%%fqdn%%/$FQDN/;s|%%restkey%%|$REST_KEY|;s|%%archiverkey%%|$ARCHIVER_KEY|;s|%%dbmailman3webpass%%|$dbmailman3webpass|;s|%%secretkey%%|$SECRET_KEY|" < "$MAILMAN_WEB_CONFIG_TEMPLATE" > "$MAILMAN_WEB_CONFIG"
     cp -a -f "$MAILMAN_WEB_CONFIG" "$MAILMAN_WEB_CONFIG_BACKUP"
-
 
 
     MAILMAN_VERSION=`dpkg -l mailman3-full | grep ^ii | awk '{print $3}' | sed -e s/-.*// -e 's/[^:]*://'`
