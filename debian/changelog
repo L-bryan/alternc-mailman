@@ -1,3 +1,9 @@
+alternc-mailman (3.6) UNRELEASED; urgency=medium
+
+  * mailman3 migration
+
+ -- root <root@vps648764.ovh.net>  Tue, 14 May 2019 16:26:56 +0200
+
 alternc-mailman (3.3.12) stable; urgency=medium
 
   * Updates the package to require alternc version 

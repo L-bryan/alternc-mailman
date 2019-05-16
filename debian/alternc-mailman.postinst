@@ -16,7 +16,7 @@ MAILMAN_HYPERKITTY_PWD=$(rgrep "api_key" $MAILMAN_HYPERKITTY_CONFIG | awk '{prin
 #Mailman web (django)
 MAILMAN_WEB_CONFIG="/etc/mailman3/mailman-web.py"
 MAILMAN_WEB_CONFIG_TEMPLATE="/etc/alternc/templates/mailman/mailman-web.py"
-MAILMAN_CONFIG_BACKUP="/var/lib/alternc/backups/etc-mailman-mailman-web.py"
+MAILMAN_WEB_CONFIG_BACKUP="/var/lib/alternc/backups/etc-mailman-mailman-web.py"
 
 MAILMAN_PASS="`perl -e 'print map{("a".."z","A".."Z",0..9)[int(rand(62))]}(1..10)' `" # copy-pasted from alternc/debian/config
 

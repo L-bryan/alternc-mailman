@@ -11,6 +11,8 @@ usr/share/alternc/panel/admin
 usr/share/alternc/panel/class
 usr/share/alternc/panel/locales/en_US/LC_MESSAGES
 usr/share/alternc/panel/locales/fr_FR/LC_MESSAGES
+usr/share/mailman3-web
 usr/lib/mailman/bin
 etc/apache2/conf.d
+etc/apache2/conf-enabled/
 var/lib/alternc/backups
